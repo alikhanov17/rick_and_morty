@@ -6,7 +6,7 @@ class CharactersState {
   final bool hasError;
   final int currentPage;
   final bool hasMore;
-  final bool isOffline; // ✅ флаг оффлайн режима
+  final bool isOffline; 
 
   const CharactersState({
     this.characters = const [],
@@ -23,7 +23,7 @@ class CharactersState {
     bool? hasError,
     int? currentPage,
     bool? hasMore,
-    bool? isOffline, // ✅ добавляем сюда тоже
+    bool? isOffline, 
   }) {
     return CharactersState(
       characters: characters ?? this.characters,
@@ -31,7 +31,7 @@ class CharactersState {
       hasError: hasError ?? this.hasError,
       currentPage: currentPage ?? this.currentPage,
       hasMore: hasMore ?? this.hasMore,
-      isOffline: isOffline ?? this.isOffline, // ✅ сохраняем флаг
+      isOffline: isOffline ?? this.isOffline, 
     );
   }
 }
