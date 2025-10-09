@@ -22,7 +22,6 @@ class ApiService {
         throw Exception('Не удалось загрузить персонажей');
       }
     } catch (e) {
-      print('❌ Ошибка при загрузке персонажей: $e');
       rethrow;
     }
   }
