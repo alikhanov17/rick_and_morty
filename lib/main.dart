@@ -10,6 +10,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await FavoritesStorage.init();
+  await Hive.openBox('charactersCache');
 
   runApp(const ProviderScope(child: RickAndMortyApp()));
 }

@@ -5,18 +5,25 @@ class ApiService {
   final Dio _dio = Dio(
     BaseOptions(baseUrl: 'https://rickandmortyapi.com/api/'),
   );
+  Future<List<Character>> fetchCharacters({required int page}) async {
+    try {
+      final response = await _dio.get(
+        'character',
+        queryParameters: {'page': page},
+      );
 
-  Future<List<Character>> fetchCharacters({int page = 1}) async {
-    final response = await _dio.get(
-      'character',
-      queryParameters: {'page': page},
-    );
+      if (response.statusCode == 200) {
+        final results = response.data['results'];
 
-    if (response.statusCode == 200) {
-      final results = response.data['results'] as List;
-      return results.map((json) => Character.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load characters');
+        return (results as List)
+            .map((json) => Character.fromJson(json))
+            .toList();
+      } else {
+        throw Exception('Не удалось загрузить персонажей');
+      }
+    } catch (e) {
+      print('❌ Ошибка при загрузке персонажей: $e');
+      rethrow;
     }
   }
 }

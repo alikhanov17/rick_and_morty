@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rick_and_morty/core/models/characters.dart';
@@ -22,6 +23,8 @@ class CharacterCard extends ConsumerWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -29,11 +32,28 @@ class CharacterCard extends ConsumerWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                character.image,
-                width: 80,
-                height: 80,
+              child: CachedNetworkImage(
+                imageUrl: character.image,
+                width: 90,
+                height: 90,
                 fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  width: 90,
+                  height: 90,
+                  alignment: Alignment.center,
+                  color: Colors.grey.shade200,
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  width: 90,
+                  height: 90,
+                  color: Colors.grey.shade300,
+                  child: const Icon(
+                    Icons.broken_image,
+                    color: Colors.grey,
+                    size: 40,
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -41,19 +61,41 @@ class CharacterCard extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(character.name, style: theme.textTheme.titleMedium),
+                  Text(
+                    character.name,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
                       Icon(Icons.circle, color: statusColor, size: 10),
                       const SizedBox(width: 6),
-                      Text('${character.status} • ${character.species}'),
+                      Expanded(
+                        child: Text(
+                          '${character.status} • ${character.species}',
+                          style: theme.textTheme.bodySmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  Text('Пол: ${character.gender}'),
-                  Text('происхождение: ${character.origin}'),
-                  Text('Локация: ${character.location}'),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Пол: ${character.gender}',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                  Text(
+                    'Происхождение: ${character.origin}',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                  Text(
+                    'Локация: ${character.location}',
+                    style: theme.textTheme.bodySmall,
+                  ),
                 ],
               ),
             ),
@@ -68,7 +110,9 @@ class CharacterCard extends ConsumerWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      isFavorite ? 'Удалено' : 'Сохранено в избранное',
+                      isFavorite
+                          ? 'Удалено из избранного'
+                          : 'Добавлено в избранное',
                     ),
                     duration: const Duration(milliseconds: 800),
                   ),

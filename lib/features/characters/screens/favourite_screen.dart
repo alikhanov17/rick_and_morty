@@ -14,12 +14,15 @@ class FavoritesScreen extends ConsumerWidget {
       return const Center(child: Text('Пусто'));
     }
 
-    return ListView.builder(
-      itemCount: favorites.length,
-      itemBuilder: (context, index) {
-        final c = favorites[index];
-        return CharacterCard(character: c);
-      },
+    return Scaffold(
+      appBar: AppBar(title: Text("Избранное")),
+      body: ListView.builder(
+        itemCount: favorites.length,
+        itemBuilder: (context, index) {
+          final c = favorites[index];
+          return CharacterCard(character: c);
+        },
+      ),
     );
   }
 }

@@ -36,7 +36,6 @@ class Character {
     );
   }
 
-  /// 👇 Вот этот метод решает твою проблему
   Map<String, dynamic> toJson() {
     return {
       'id': id,
